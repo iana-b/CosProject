@@ -1,6 +1,6 @@
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
-from cosproject.cosapp.forms import LoginForm
+from .forms import LoginForm, ProductForm
 
 
 # Create your views here.
@@ -14,3 +14,14 @@ def login_view(request):
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
+
+
+def product_new(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.save()
+    else:
+        form = ProductForm()
+    return render(request, 'product_edit.html', {'form': form})
