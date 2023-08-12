@@ -1,6 +1,7 @@
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from .forms import LoginForm, ProductForm
+from .models import Product
 
 
 # Create your views here.
@@ -22,6 +23,14 @@ def product_new(request):
         if form.is_valid():
             product = form.save(commit=False)
             product.save()
+            return redirect('product_detail', pk=product.pk)
     else:
         form = ProductForm()
-    return render(request, 'product_edit.html', {'form': form})
+    context = {'form': form}
+    return render(request, 'product_edit.html', context)
+
+
+def product_detail(request, pk):
+    product = Product.objects.get(pk=pk)
+    context = {'product': product}
+    return render(request, 'product_detail.html', context)
