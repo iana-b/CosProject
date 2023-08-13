@@ -1,23 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
-    <title>Details</title>
-</head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-3 text-center">
-                <img src="{{ product.picture.url }}" alt="" style="max-width: 300px; max-height:300px">
-            </div>
-            <div class="col">
-                <p class="badge rounded-pill bg-primary">{{ product.category }}</p>
-                <p class="h4">{{ product.brand }}</p>
-                <h1>{{ product.title }}</h1>
-            </div>
+{% extends "base.html" %}
+
+{% block title %}Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-3 text-center">
+            <img src="{{ product.picture.url }}" alt="" style="max-width: 300px; max-height:300px">
+        </div>
+        <div class="col">
+            <p class="badge rounded-pill bg-primary">{{ product.category }}</p>
+            <p class="h4">{{ product.brand }}</p>
+            <h1>{{ product.title }}</h1>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

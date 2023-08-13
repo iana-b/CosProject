@@ -1,24 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-     {% load static %}
-    <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
-    <title>Добавление продукта</title>
-</head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-4 mx-auto">
-                <h1>Продукт</h1>
-                {% load crispy_forms_tags %}
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                </form>      
-            </div>
+{% extends "base.html" %}
+
+{% block title %}Добавление продукта{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-4 mx-auto">
+            <h1>Продукт</h1>
+            {% load crispy_forms_tags %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>      
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
