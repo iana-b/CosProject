@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Список продуктов{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row row-cols-4">
+        {% for product in products %}
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{{ product.picture.url }}" class="card-img-top" alt="" style="object-fit: contain; aspect-ratio: 1/1;">
+                <div class="card-body">
+                    <p class="card-text">{{ product.brand }}</p>
+                    <h5 class="card-title">{{ product.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">{{ product.category }}</h6>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
