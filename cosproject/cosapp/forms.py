@@ -24,7 +24,9 @@ class ProductForm(forms.ModelForm):
 
 
 class PurchaseForm(forms.ModelForm):
-    date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    date = forms.DateField(
+        required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    store = forms.CharField(required=False)
 
     class Meta:
         model = Purchase
