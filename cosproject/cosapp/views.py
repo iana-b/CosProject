@@ -1,6 +1,6 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
-from .forms import LoginForm, SignUpForm, ProductForm
+from .forms import LoginForm, SignUpForm, ProductForm, PurchaseForm
 from .models import Product
 
 
@@ -29,7 +29,8 @@ def signup_view(request):
             return redirect('home')
     else:
         form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
+    context = {'form': form}
+    return render(request, 'signup.html', context)
 
 
 def logout_view(request):
@@ -52,7 +53,17 @@ def product_new(request):
 
 def product_detail(request, pk):
     product = Product.objects.get(pk=pk)
-    context = {'product': product}
+    if request.method == 'POST':
+        form = PurchaseForm(request.POST)
+        if form.is_valid():
+            purchase = form.save(commit=False)
+            purchase.user = request.user
+            purchase.product = product
+            purchase.save()
+            return redirect('product_detail', pk=pk)
+    else:
+        form = PurchaseForm()
+    context = {'product': product, 'form': form}
     return render(request, 'product_detail.html', context)
 
 
