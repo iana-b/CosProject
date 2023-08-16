@@ -53,6 +53,13 @@ def product_new(request):
 
 def product_detail(request, pk):
     product = Product.objects.get(pk=pk)
+    form = PurchaseForm()
+    context = {'product': product, 'form': form}
+    return render(request, 'product_detail.html', context)
+
+
+def purchase_new(request, pk):
+    product = Product.objects.get(pk=pk)
     if request.method == 'POST':
         form = PurchaseForm(request.POST)
         if form.is_valid():
@@ -61,10 +68,7 @@ def product_detail(request, pk):
             purchase.product = product
             purchase.save()
             return redirect('product_detail', pk=pk)
-    else:
-        form = PurchaseForm()
-    context = {'product': product, 'form': form}
-    return render(request, 'product_detail.html', context)
+    return redirect('product_detail', pk=pk)
 
 
 def product_list(request):

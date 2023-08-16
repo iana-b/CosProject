@@ -31,7 +31,7 @@
 
                 <div class="modal-body">
                     {% load crispy_forms_tags %}
-                    <form method="POST" id="purchase">
+                    <form method="POST" action="{% url 'purchase_new' product.id %}" id="purchase">
                         {% csrf_token %}
                         {{ form|crispy }}
                     </form>   
