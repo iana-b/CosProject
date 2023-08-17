@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Product, Purchase
+from .models import Product, Purchase, Review
 
 
 class LoginForm(AuthenticationForm):
@@ -30,4 +30,12 @@ class PurchaseForm(forms.ModelForm):
 
     class Meta:
         model = Purchase
+        exclude = ('user', 'product')
+
+
+class ReviewForm(forms.ModelForm):
+    comment = forms.CharField(widget=forms.Textarea, required=False)
+
+    class Meta:
+        model = Review
         exclude = ('user', 'product')

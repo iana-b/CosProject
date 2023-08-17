@@ -1,6 +1,6 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
-from .forms import LoginForm, SignUpForm, ProductForm, PurchaseForm
+from .forms import LoginForm, SignUpForm, ProductForm, PurchaseForm, ReviewForm
 from .models import Product
 
 
@@ -53,8 +53,9 @@ def product_new(request):
 
 def product_detail(request, pk):
     product = Product.objects.get(pk=pk)
-    form = PurchaseForm()
-    context = {'product': product, 'form': form}
+    purchase_form = PurchaseForm()
+    review_form = ReviewForm()
+    context = {'product': product, 'purchase_form':  purchase_form, 'review_form':  review_form}
     return render(request, 'product_detail.html', context)
 
 
@@ -67,6 +68,19 @@ def purchase_new(request, pk):
             purchase.user = request.user
             purchase.product = product
             purchase.save()
+            return redirect('product_detail', pk=pk)
+    return redirect('product_detail', pk=pk)
+
+
+def review_new(request, pk):
+    product = Product.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.product = product
+            review.save()
             return redirect('product_detail', pk=pk)
     return redirect('product_detail', pk=pk)
 
