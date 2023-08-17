@@ -1,7 +1,8 @@
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .forms import LoginForm, SignUpForm, ProductForm, PurchaseForm, ReviewForm
-from .models import Product
+from .models import Product, Purchase
 
 
 # Create your views here.
@@ -89,3 +90,10 @@ def product_list(request):
     products = Product.objects.all()
     context = {'products': products}
     return render(request, 'product_list.html', context)
+
+
+def user_view(request, username):
+    profile = User.objects.get(username=username)
+    purchases = Purchase.objects.filter(user=profile)
+    context = {'profile': profile, 'purchases': purchases}
+    return render(request, 'user_view.html', context)

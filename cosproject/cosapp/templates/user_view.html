@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{profile.username}}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <table class="table">
+            <tbody>
+            {% for purchase in purchases %}
+            <tr>
+                <td>
+                    <a href="{% url 'product_detail' purchase.product.id %}">
+                        <img src="{{ purchase.product.picture.url }}" alt=""
+                             style="width: 75px; object-fit: contain; aspect-ratio: 1/1;"></a></td>
+                <td>
+                    <a href="{% url 'product_detail' purchase.product.id %}" class="h6">
+                        {{ purchase.product.title }}</a><br>{{ purchase.product.category }}
+                </td>
+                <td>{{ purchase.product.brand }}</td>
+                <td>{{ purchase.date }}</td>
+                <td>{{ purchase.price }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
