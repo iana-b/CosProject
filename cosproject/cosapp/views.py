@@ -92,8 +92,8 @@ def product_list(request):
     return render(request, 'product_list.html', context)
 
 
-def user_view(request, username):
+def user_purchase(request, username):
     profile = User.objects.get(username=username)
     purchases = Purchase.objects.filter(user=profile)
     context = {'profile': profile, 'purchases': purchases}
-    return render(request, 'user_view.html', context)
+    return render(request, 'user_purchase.html', context)
