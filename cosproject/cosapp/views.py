@@ -2,7 +2,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .forms import LoginForm, SignUpForm, ProductForm, PurchaseForm, ReviewForm
-from .models import Product, Purchase
+from .models import Product, Purchase, Review
 
 
 # Create your views here.
@@ -97,3 +97,10 @@ def user_purchase(request, username):
     purchases = Purchase.objects.filter(user=profile)
     context = {'profile': profile, 'purchases': purchases}
     return render(request, 'user_purchase.html', context)
+
+
+def user_review(request, username):
+    profile = User.objects.get(username=username)
+    reviews = Review.objects.filter(user=profile)
+    context = {'profile': profile, 'reviews': reviews}
+    return render(request, 'user_review.html', context)
