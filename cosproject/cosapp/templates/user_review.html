@@ -5,7 +5,15 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <p class="h1 text-center mb-4">Оценки</p>
+        <p class="h1 text-center mb-4">{{profile.username}}</p>
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'user_purchase' profile.username %}">Покупки</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'user_review' profile.username %}">Отзывы</a>
+          </li>
+        </ul>
         {% for review in reviews %}
         <div class="card mb-3" style="max-width: 540px;">
           <div class="row g-0">
