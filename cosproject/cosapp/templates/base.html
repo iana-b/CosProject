@@ -21,7 +21,11 @@
                         </li>
                     </ul>
 
-                    <ul class="navbar-nav ms-auto">
+                    <form class="d-flex ms-auto" role="search" action="{% url 'search' %}">
+                        <input class="form-control me-2" name="q" type="search" placeholder="Поиск" aria-label="Поиск">
+                    </form>
+
+                    <ul class="navbar-nav">
                         {% if user.is_authenticated %}
 
                          <li class="nav-item dropdown">

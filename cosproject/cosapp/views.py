@@ -1,5 +1,6 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from .forms import LoginForm, SignUpForm, ProductForm, PurchaseForm, ReviewForm
 from .models import Product, Purchase, Review, Category, Brand
@@ -119,3 +120,10 @@ def brand_view(request, pk):
     products = Product.objects.filter(brand=brand)
     context = {'brand': brand, 'products': products}
     return render(request, 'brand.html', context)
+
+
+def search_view(request):
+    query = request.GET.get('q')
+    products = Product.objects.filter(Q(title__icontains=query) | Q(brand__title__icontains=query) | Q(category__title__icontains=query))
+    context = {'query': query, 'products': products}
+    return render(request, 'search.html', context)

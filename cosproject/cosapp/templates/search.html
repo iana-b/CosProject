@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <p class="h1 text-center mb-4">Поиск по запросу {{ query }}</p>
+        {% for product in products %}
+            {% include 'product.html' with product=product %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
