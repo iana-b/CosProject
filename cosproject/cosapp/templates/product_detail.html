@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Details{% endblock %}
+{% block title %}{{ product.title }}{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -9,17 +9,17 @@
             <img src="{{ product.picture.url }}" alt="" style="width: 100%; object-fit: contain; aspect-ratio: 1/1;">
         </div>
         <div class="col">
-            <p class="badge rounded-pill bg-primary">{{ product.category }}</p>
-            <p class="h4">{{ product.brand }}</p>
+            <a href="{% url 'category' product.category.id %}" class="h6">{{ product.category }}</a>
             <h1>{{ product.title }}</h1>
+            <a href="{% url 'brand' product.brand.id %}" class="h6 d-block">{{ product.brand }}</a>
 
             {% if user.is_authenticated %}
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#purchaseModal">
-                Товар приобретен
-            </button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">
-                Оценить товар
-            </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#purchaseModal">
+                    Товар приобретен
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                    Оценить товар
+                </button>
             {% endif %}
         </div>
     </div>

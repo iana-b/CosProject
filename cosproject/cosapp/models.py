@@ -18,10 +18,10 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    title = models.CharField(max_length=50)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to='products')
+    title = models.CharField('название', max_length=50)
+    brand = models.ForeignKey(Brand, verbose_name='бренд', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, verbose_name='категория', on_delete=models.CASCADE)
+    picture = models.ImageField('изображение', upload_to='products')
 
     def __str__(self):
         return self.title
@@ -30,9 +30,9 @@ class Product(models.Model):
 class Purchase(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    date = models.DateField(null=True)
-    store = models.CharField(max_length=30)
+    price = models.DecimalField('стоимость', max_digits=6, decimal_places=2)
+    date = models.DateField('дата', null=True)
+    store = models.CharField('магазин', max_length=30)
 
     def __str__(self):
         return f'{self.user.username} - {self.product.title}'
@@ -50,9 +50,9 @@ RATING_CHOICES = [
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
-    comment = models.TextField()
-    liked = models.BooleanField(null=True)
+    rating = models.PositiveSmallIntegerField('рейтинг', choices=RATING_CHOICES)
+    comment = models.TextField('комментарий')
+    liked = models.BooleanField('понравилось ?', null=True)
 
     def __str__(self):
         return f'{self.user.username} - {self.product.title}'

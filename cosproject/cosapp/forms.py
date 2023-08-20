@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.utils.text import capfirst
+
 from .models import Product, Purchase, Review
 
 
@@ -25,8 +27,8 @@ class ProductForm(forms.ModelForm):
 
 class PurchaseForm(forms.ModelForm):
     date = forms.DateField(
-        required=False, widget=forms.DateInput(attrs={'type': 'date'}))
-    store = forms.CharField(required=False)
+        label=capfirst(Purchase.date.field.verbose_name), required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    store = forms.CharField(label=capfirst(Purchase.store.field.verbose_name), required=False)
 
     class Meta:
         model = Purchase
@@ -34,7 +36,7 @@ class PurchaseForm(forms.ModelForm):
 
 
 class ReviewForm(forms.ModelForm):
-    comment = forms.CharField(widget=forms.Textarea, required=False)
+    comment = forms.CharField(label=capfirst(Review.comment.field.verbose_name), widget=forms.Textarea, required=False)
 
     class Meta:
         model = Review
