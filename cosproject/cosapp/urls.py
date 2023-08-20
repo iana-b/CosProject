@@ -12,4 +12,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('user/<str:username>', views.user_purchase, name='user_purchase'),
     path('user/<str:username>/reviews', views.user_review, name='user_review'),
+    path('category/<int:pk>', views.category_view, name='category'),
+    path('brand/<int:pk>', views.brand_view, name='brand'),
 ]
