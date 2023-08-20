@@ -56,7 +56,8 @@ def product_detail(request, pk):
     product = Product.objects.get(pk=pk)
     purchase_form = PurchaseForm()
     review_form = ReviewForm()
-    context = {'product': product, 'purchase_form':  purchase_form, 'review_form':  review_form}
+    reviews = Review.objects.filter(product=product)
+    context = {'product': product, 'purchase_form':  purchase_form, 'review_form':  review_form, 'reviews': reviews}
     return render(request, 'product_detail.html', context)
 
 

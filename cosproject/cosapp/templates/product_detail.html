@@ -14,13 +14,22 @@
             <a href="{% url 'brand' product.brand.id %}" class="h6 d-block">{{ product.brand }}</a>
 
             {% if user.is_authenticated %}
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#purchaseModal">
-                    Товар приобретен
-                </button>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">
-                    Оценить товар
-                </button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#purchaseModal">
+                Товар приобретен
+            </button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                Оценить товар
+            </button>
             {% endif %}
+            {% for review in reviews %}
+            <div class="card mt-3">
+                <div class="card-body">
+                    <p class="card-text">{{ review.user.username }}</p>
+                    <p class="card-text h5">{{ review.get_rating_display }} {{ review.liked|yesno:"👍🏼, 👎🏼, " }}</p>
+                    <p class="card-text">{{ review.comment }}</p>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
@@ -37,7 +46,7 @@
                     <form method="POST" action="{% url 'purchase_new' product.id %}" id="purchase">
                         {% csrf_token %}
                         {{ purchase_form|crispy }}
-                    </form>   
+                    </form>
                 </div>
 
                 <div class="modal-footer">
