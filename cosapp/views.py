@@ -1,5 +1,6 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from .forms import LoginForm, SignUpForm, ProductForm, PurchaseForm, ReviewForm
@@ -90,7 +91,10 @@ def review_new(request, pk):
 
 def product_list(request):
     products = Product.objects.all()
-    context = {'products': products}
+    paginator = Paginator(products, 4)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj': page_obj}
     return render(request, 'product_list.html', context)
 
 
