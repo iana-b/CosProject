@@ -23,6 +23,5 @@
       "src": "/(.*)",
       "dest": "cosproject/wsgi.py"
     }
-  ],
-  "outputDirectory": "staticfiles_build"
+  ]
 }
