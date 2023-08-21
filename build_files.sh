@@ -1,4 +1,4 @@
 pip install -r requirements.txt
 
-python ./cosproject/manage.py migrate
-python ./cosproject/manage.py collectstatic
+python3 ./cosproject/manage.py migrate
+python3 ./cosproject/manage.py collectstatic
