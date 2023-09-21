@@ -90,8 +90,8 @@ def review_new(request, pk):
 
 
 def product_list(request):
-    products = Product.objects.all()
-    paginator = Paginator(products, 4)
+    products = Product.objects.order_by("brand__title", "title")
+    paginator = Paginator(products, 8)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     context = {'page_obj': page_obj}
