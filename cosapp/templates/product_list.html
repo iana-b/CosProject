@@ -4,6 +4,13 @@
 
 {% block content %}
 <div class="container">
+    <ul>
+    {% for category in categories %}
+        <li class="d-inline-block me-5">
+            <a href="{% url 'category' category.id %}" class="h6">{{ category }}</a>
+        </li>
+    {% endfor %}
+    </ul>
     <div class="row">
         {% for product in page_obj %}
             {% include 'product.html' with product=product %}
