@@ -1,7 +1,10 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import (
+    Avg,
+    Q
+)
 from django.shortcuts import render, redirect
 from .forms import LoginForm, SignUpForm, ProductForm, PurchaseForm, ReviewForm
 from .models import Product, Purchase, Review, Category, Brand
@@ -59,7 +62,9 @@ def product_detail(request, pk):
     purchase_form = PurchaseForm()
     review_form = ReviewForm()
     reviews = Review.objects.filter(product=product)
-    context = {'product': product, 'purchase_form':  purchase_form, 'review_form':  review_form, 'reviews': reviews}
+    avg_rating = product.get_average_rating()
+    context = {'product': product, 'purchase_form':  purchase_form, 'review_form':  review_form, 'reviews': reviews,
+               'avg_rating': avg_rating}
     return render(request, 'product_detail.html', context)
 
 
@@ -90,7 +95,7 @@ def review_new(request, pk):
 
 
 def product_list(request):
-    products = Product.objects.order_by("brand__title", "title")
+    products = Product.objects.annotate(avg_rating=Avg('review__rating')).order_by("brand__title", "title")
     categories = Category.objects.order_by("title")
     paginator = Paginator(products, 8)
     page_number = request.GET.get("page")

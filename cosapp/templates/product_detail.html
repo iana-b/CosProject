@@ -12,7 +12,18 @@
             <a href="{% url 'category' product.category.id %}" class="h6">{{ product.category }}</a>
             <h1>{{ product.title }}</h1>
             <a href="{% url 'brand' product.brand.id %}" class="h6 d-block">{{ product.brand }}</a>
-
+            <div class="average-rating mb-3">
+                {% with avg_rating=product.get_average_rating %}
+                    {% if avg_rating > 0 %}
+                        <div class="rating-hearts">
+                            <span style="font-size: 1.5em;">{{ product.get_hearts_display }}</span>
+                            <span class="ms-2">({{ avg_rating|floatformat:1 }})</span>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">Нет отзывов</p>
+                    {% endif %}
+                {% endwith %}
+            </div>
             {% if user.is_authenticated %}
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#purchaseModal">
                 Товар приобретен
