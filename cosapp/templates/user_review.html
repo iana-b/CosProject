@@ -15,12 +15,12 @@
           </li>
         </ul>
         {% for review in reviews %}
-        <div class="col-6 col-md-6 col-lg-4 mb-3">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3">
         <div class="card h-100 border border-light-subtle">
           <div class="row g-0">
             <div class="col-md-4">
               <a href="{% url 'product_detail' review.product.id %}">
-                        <img src="{{ review.product.picture.url }}" class="img-fluid rounded-start p-2" alt=""
+                        <img src="{{ review.product.picture.url }}" class="card-img img-fluid rounded-start p-2" alt=""
                              style="object-fit: contain; aspect-ratio: 1/1;"></a>
             </div>
             <div class="col-md-8">
