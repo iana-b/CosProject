@@ -96,11 +96,10 @@ def review_new(request, pk):
 
 def product_list(request):
     products = Product.objects.annotate(avg_rating=Avg('review__rating')).order_by("brand__title", "title")
-    categories = Category.objects.order_by("title")
-    paginator = Paginator(products, 8)
+    paginator = Paginator(products, 16)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    context = {'page_obj': page_obj, 'categories': categories}
+    context = {'page_obj': page_obj}
     return render(request, 'product_list.html', context)
 
 

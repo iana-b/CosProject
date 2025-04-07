@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         <p class="h1 text-center mb-4">{{profile.username}}</p>
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-pills mb-4">
           <li class="nav-item">
             <a class="nav-link" href="{% url 'user_purchase' profile.username %}">Покупки</a>
           </li>
@@ -15,22 +15,25 @@
           </li>
         </ul>
         {% for review in reviews %}
-        <div class="card mb-3" style="max-width: 540px;">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3">
+        <div class="card h-100 border border-light-subtle">
           <div class="row g-0">
             <div class="col-md-4">
               <a href="{% url 'product_detail' review.product.id %}">
-                        <img src="{{ review.product.picture.url }}" class="img-fluid rounded-start" alt=""
+                        <img src="{{ review.product.picture.url }}" class="card-img img-fluid rounded-start p-2" alt=""
                              style="object-fit: contain; aspect-ratio: 1/1;"></a>
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title"><a href="{% url 'product_detail' review.product.id %}" class="h5">{{ review.product.title }}</a> {{ review.liked|yesno:"👍🏼, 👎🏼, " }}</h5>
-                  <p class="card-text h5">{{ review.get_rating_display }}</p>
-                  <p class="card-text">{{ review.comment }}</p>
+                <p class="card-subtitle mb-1 text-body-secondary">{{ review.product.category }}</p>
+                <h5 class="card-title">{{ review.product.brand }} {{ review.product.title }}</h5>
+                <p class="card-text"><small>{{ review.get_rating_display }} {{ review.liked|yesno:"👍🏼, 👎🏼, " }}</small></p>
+                <p class="card-text">{{ review.comment }}</p>
               </div>
             </div>
           </div>
         </div>
+      </div>
         {% endfor %}
     </div>
 </div>

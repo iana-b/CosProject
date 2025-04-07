@@ -5,19 +5,6 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-12 text-center mb-4">
-            <ul class="categories-list p-0 d-flex flex-wrap justify-content-center">
-            {% for category in categories %}
-                <li class="d-inline-block me-5 mb-4">
-                    <a href="{% url 'category' category.id %}" class="text-decoration-none text-secondary">
-                        {{ category }}
-                    </a>
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
-    </div>
-    <div class="row">
         {% for product in page_obj %}
             {% include 'product.html' with product=product %}
         {% endfor %}
