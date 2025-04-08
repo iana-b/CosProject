@@ -25,8 +25,8 @@
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <p class="card-subtitle mb-1 text-body-secondary">{{ review.product.category }}</p>
-                <h5 class="card-title">{{ review.product.brand }} {{ review.product.title }}</h5>
+                <p class="card-subtitle mb-1"><a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-25-hover text-body-secondary" href="{% url 'category' review.product.category.id %}">{{ review.product.category }}</a></p>
+                <h5 class="card-title"><a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-25-hover text-body" href="{% url 'brand' review.product.brand.id %}">{{ review.product.brand }}</a> {{ review.product.title }}</h5>
                 <p class="card-text"><small>{{ review.get_rating_display }} {{ review.liked|yesno:"👍🏼, 👎🏼, " }}</small></p>
                 <p class="card-text">{{ review.comment }}</p>
               </div>

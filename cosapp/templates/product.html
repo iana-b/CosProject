@@ -4,8 +4,8 @@
             <img src="{{ product.picture.url }}" class="card-img-top p-2" alt="" style="object-fit: contain; aspect-ratio: 1/1;">
         </a>
         <div class="card-body">
-            <p class="card-subtitle mb-1 text-body-secondary">{{ product.category }}</p>
-            <h5 class="card-title">{{ product.brand }} {{ product.title }}</h5>
+            <p class="card-subtitle mb-1"><a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-25-hover text-body-secondary" href="{% url 'category' product.category.id %}">{{ product.category }}</a></p>
+            <h5 class="card-title"><a href="{% url 'brand' product.brand.id %}" class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-25-hover text-body">{{ product.brand }}</a> {{ product.title }}</h5>
             {% with avg_rating=product.get_average_rating %}
                 {% if avg_rating > 0 %}
                     <small>
