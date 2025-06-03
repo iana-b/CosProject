@@ -16,6 +16,13 @@
                     <small class="text-muted">Нет отзывов</small>
                 {% endif %}
             {% endwith %}
+            {% with min_price=product.get_minimal_price %}
+                {% if min_price > 0 %}
+                    <small>
+                        <span class="text-muted">{{ min_price|floatformat:1 }}</span>
+                    </small>
+                {% endif %}
+            {% endwith %}
         </div>
     </div>
 </div>

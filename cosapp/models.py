@@ -38,6 +38,12 @@ class Product(models.Model):
             return reviews.aggregate(models.Avg('rating'))['rating__avg']
         return 0
 
+    def get_minimal_price(self):
+        purchases = Purchase.objects.filter(product=self)
+        if purchases.exists():
+            return purchases.aggregate(models.Min('price'))['price__min']
+        return 0
+
     def get_hearts_display(self):
         avg = self.get_average_rating()
         import math

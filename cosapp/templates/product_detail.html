@@ -41,6 +41,14 @@
                 </div>
             </div>
             {% endfor %}
+            {% for purchase in purchases %}
+            <div class="card mt-3">
+                <div class="card-body">
+                    <p class="card-text">{{ purchase.date }}</p>
+                    <p class="card-text">{{ purchase.price }}</p>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 

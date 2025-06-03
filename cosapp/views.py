@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import (
     Avg,
+    Min,
     Q
 )
 from django.shortcuts import render, redirect
@@ -62,9 +63,10 @@ def product_detail(request, pk):
     purchase_form = PurchaseForm()
     review_form = ReviewForm()
     reviews = Review.objects.filter(product=product)
+    purchases = Purchase.objects.filter(product=product)
     avg_rating = product.get_average_rating()
     context = {'product': product, 'purchase_form':  purchase_form, 'review_form':  review_form, 'reviews': reviews,
-               'avg_rating': avg_rating}
+               'avg_rating': avg_rating, 'purchases': purchases}
     return render(request, 'product_detail.html', context)
 
 
