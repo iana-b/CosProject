@@ -27,15 +27,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG")
+DEBUG = os.environ.get("DEBUG", "").lower() in ("1", "true", "yes")
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'cosapp.fly.dev']
 
 CSRF_TRUSTED_ORIGINS = ['https://cosapp.fly.dev']
 
-# Django Debug Toolbar (only active when DEBUG is True)
 INTERNAL_IPS = ['127.0.0.1']
-
 
 # Application definition
 
@@ -51,8 +49,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     "crispy_bootstrap5",
     "django_browser_reload",
-    "debug_toolbar",
 ]
+if DEBUG:
+    INSTALLED_APPS.append("debug_toolbar")
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
@@ -68,8 +67,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_browser_reload.middleware.BrowserReloadMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
+if DEBUG:
+    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
 
 ROOT_URLCONF = 'cosproject.urls'
 
