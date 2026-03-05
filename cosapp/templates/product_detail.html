@@ -25,12 +25,14 @@
                 {% endwith %}
             </div>
             {% if user.is_authenticated %}
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#purchaseModal">
-                Товар приобретен
-            </button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">
-                Оценить товар
-            </button>
+            <div class="d-flex flex-wrap gap-3">
+                <button type="button" class="btn btn-product-purchase btn-lg" data-bs-toggle="modal" data-bs-target="#purchaseModal">
+                    🛒 Я приобрел(-а) товар
+                </button>
+                <button type="button" class="btn btn-product-review btn-lg" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                    ⭐ Оценить товар
+                </button>
+            </div>
             {% endif %}
             {% for review in reviews %}
             <div class="card mt-3">

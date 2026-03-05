@@ -9,10 +9,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
     <link rel="manifest" href="{% static 'site.webmanifest' %}">
     <title>{% block title %}cosapp{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'cosapp.css' %}">
 </head>
 <body>
-    <header class="mb-3 border-bottom">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <header class="mb-3">
+        <nav class="navbar navbar-expand-lg navbar-cosapp">
             <div class="container">
                 <a class="navbar-brand" href="{% url 'home' %}">cosapp</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

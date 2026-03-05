@@ -8,8 +8,8 @@
         {% for product in page_obj %}
             {% include 'product.html' with product=product %}
         {% endfor %}
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
+        <nav aria-label="Навигация по страницам">
+            <ul class="pagination pagination-lg pagination-custom justify-content-center flex-wrap">
                 {% if page_obj.has_previous %}
                     <li class="page-item"><a class="page-link" href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">Предыдущая страница</a></li>
                 {% endif %}
