@@ -87,7 +87,7 @@ class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField('рейтинг', choices=RATING_CHOICES)
     comment = models.TextField('комментарий')
-    liked = models.BooleanField('понравилось ?', null=True)
+    liked = models.BooleanField('приобрел(-а) бы еще раз?', null=True)
 
     def __str__(self):
         return f'{self.user.username} - {self.product.title}'
