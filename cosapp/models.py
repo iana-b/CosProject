@@ -33,12 +33,16 @@ class Product(models.Model):
         return self.title
 
     def get_average_rating(self):
+        if hasattr(self, "avg_rating"):
+            return self.avg_rating or 0
         reviews = Review.objects.filter(product=self)
         if reviews.exists():
             return reviews.aggregate(models.Avg('rating'))['rating__avg']
         return 0
 
     def get_minimal_price(self):
+        if hasattr(self, "min_price"):
+            return self.min_price or 0
         purchases = Purchase.objects.filter(product=self)
         if purchases.exists():
             return purchases.aggregate(models.Min('price'))['price__min']

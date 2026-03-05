@@ -33,6 +33,9 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'cosapp.fly.dev']
 
 CSRF_TRUSTED_ORIGINS = ['https://cosapp.fly.dev']
 
+# Django Debug Toolbar (only active when DEBUG is True)
+INTERNAL_IPS = ['127.0.0.1']
+
 
 # Application definition
 
@@ -48,6 +51,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     "crispy_bootstrap5",
     "django_browser_reload",
+    "debug_toolbar",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -64,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'cosproject.urls'
@@ -94,7 +99,6 @@ WSGI_APPLICATION = 'cosproject.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(conn_max_age=600)
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

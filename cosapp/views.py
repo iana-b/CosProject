@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import (
     Avg,
     Min,
-    Q
+    Q,
 )
 from django.shortcuts import render, redirect
 from .forms import LoginForm, SignUpForm, ProductForm, PurchaseForm, ReviewForm
@@ -59,15 +59,27 @@ def product_new(request):
 
 
 def product_detail(request, pk):
-    product = Product.objects.get(pk=pk)
+    product = (
+        Product.objects.annotate(
+            avg_rating=Avg("review__rating"),
+            min_price=Min("purchase__price"),
+        )
+        .select_related("brand", "category")
+        .get(pk=pk)
+    )
     purchase_form = PurchaseForm()
     review_form = ReviewForm()
-    reviews = Review.objects.filter(product=product)
+    reviews = Review.objects.filter(product=product).select_related("user")
     purchases = Purchase.objects.filter(product=product)
-    avg_rating = product.get_average_rating()
-    context = {'product': product, 'purchase_form':  purchase_form, 'review_form':  review_form, 'reviews': reviews,
-               'avg_rating': avg_rating, 'purchases': purchases}
-    return render(request, 'product_detail.html', context)
+    context = {
+        "product": product,
+        "purchase_form": purchase_form,
+        "review_form": review_form,
+        "reviews": reviews,
+        "avg_rating": product.avg_rating or 0,
+        "purchases": purchases,
+    }
+    return render(request, "product_detail.html", context)
 
 
 def purchase_new(request, pk):
@@ -97,7 +109,7 @@ def review_new(request, pk):
 
 
 def product_list(request):
-    products = Product.objects.annotate(avg_rating=Avg('review__rating')).order_by("brand__title", "title")
+    products = _products_queryset()
     paginator = Paginator(products, 16)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -119,22 +131,37 @@ def user_review(request, username):
     return render(request, 'user_review.html', context)
 
 
+def _products_queryset(queryset=None):
+    """Базовый queryset товаров с брендом, категорией, рейтингом и ценой — без N+1."""
+    qs = queryset or Product.objects.all()
+    return qs.select_related("brand", "category").annotate(
+        avg_rating=Avg("review__rating"),
+        min_price=Min("purchase__price"),
+    ).order_by("brand__title", "title")
+
+
 def category_view(request, pk):
     category = Category.objects.get(pk=pk)
-    products = Product.objects.filter(category=category)
+    products = _products_queryset(Product.objects.filter(category=category))
     context = {'category': category, 'products': products}
     return render(request, 'category.html', context)
 
 
 def brand_view(request, pk):
     brand = Brand.objects.get(pk=pk)
-    products = Product.objects.filter(brand=brand)
+    products = _products_queryset(Product.objects.filter(brand=brand))
     context = {'brand': brand, 'products': products}
     return render(request, 'brand.html', context)
 
 
 def search_view(request):
     query = request.GET.get('q')
-    products = Product.objects.filter(Q(title__icontains=query) | Q(brand__title__icontains=query) | Q(category__title__icontains=query))
+    products = _products_queryset(
+        Product.objects.filter(
+            Q(title__icontains=query)
+            | Q(brand__title__icontains=query)
+            | Q(category__title__icontains=query)
+        )
+    )
     context = {'query': query, 'products': products}
     return render(request, 'search.html', context)
