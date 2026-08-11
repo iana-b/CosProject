@@ -9,6 +9,9 @@
             <img src="{{ product.picture.url }}" alt="" style="width: 100%; object-fit: contain; aspect-ratio: 1/1;">
         </div>
         <div class="col">
+            {% if product.status == 'draft' %}
+            <div class="alert alert-warning py-2">Товар на проверке — виден только вам, пока не будет одобрен.</div>
+            {% endif %}
             <a href="{% url 'category' product.category.id %}" class="h6">{{ product.category }}</a>
             <h1>{{ product.title }}</h1>
             <a href="{% url 'brand' product.brand.id %}" class="h6 d-block">{{ product.brand }}</a>

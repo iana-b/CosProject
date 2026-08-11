@@ -39,9 +39,17 @@
                             </ul>
                         </li>
 
+                        {% if user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'product_new' %}">Добавить продукт</a>
                         </li>
+                        {% endif %}
+
+                        {% if user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'stats' %}">Статистика</a>
+                        </li>
+                        {% endif %}
                     </ul>
 
                     <form class="d-flex ms-auto" role="search" action="{% url 'search' %}">

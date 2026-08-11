@@ -13,16 +13,28 @@ class LoginForm(AuthenticationForm):
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=255, help_text='Required')
+    website = forms.CharField(required=False, widget=forms.HiddenInput)
 
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
+    def clean_website(self):
+        if self.cleaned_data.get('website'):
+            raise forms.ValidationError('Регистрация отклонена.')
+        return ''
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError('Этот адрес уже используется.')
+        return email
+
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = '__all__'
+        exclude = ('user', 'status', 'created_at')
 
 
 class PurchaseForm(forms.ModelForm):

@@ -2,3 +2,13 @@ fly.toml
 .git/
 *.sqlite3
 .env
+venv
+staticfiles
+media
+__pycache__
+*.py[cod]
+.idea
+.cursor
+.DS_Store
+CLAUDE.md
+.claude/

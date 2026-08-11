@@ -24,13 +24,28 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    DRAFT = 'draft'
+    PUBLISHED = 'published'
+    STATUS_CHOICES = [
+        (DRAFT, 'на проверке'),
+        (PUBLISHED, 'опубликован'),
+    ]
+
     title = models.CharField('название', max_length=50)
     brand = models.ForeignKey(Brand, verbose_name='бренд', on_delete=models.CASCADE)
     category = models.ForeignKey(Category, verbose_name='категория', on_delete=models.CASCADE)
     picture = models.ImageField('изображение', upload_to='products')
+    user = models.ForeignKey(User, verbose_name='добавил', on_delete=models.CASCADE, null=True)
+    status = models.CharField('статус', max_length=9, choices=STATUS_CHOICES, default=DRAFT)
+    created_at = models.DateTimeField('добавлен', auto_now_add=True, null=True)
 
     def __str__(self):
         return self.title
+
+    def is_visible_to(self, user):
+        if self.status == self.PUBLISHED:
+            return True
+        return user.is_authenticated and (user.is_staff or self.user_id == user.id)
 
     def get_average_rating(self):
         if hasattr(self, "avg_rating"):
@@ -75,6 +90,21 @@ class Purchase(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.product.title}'
+
+
+class PageView(models.Model):
+    path = models.CharField(max_length=200)
+    product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    ip_hash = models.CharField(max_length=12, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [models.Index(fields=['-created_at'])]
+
+    def __str__(self):
+        return f'{self.created_at:%Y-%m-%d %H:%M} {self.path}'
 
 
 RATING_CHOICES = [
