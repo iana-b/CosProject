@@ -10,6 +10,9 @@
     <link rel="manifest" href="{% static 'site.webmanifest' %}">
     <title>{% block title %}cosapp{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'cosapp.css' %}">
+    {% if not debug %}
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="1e78a1a9-427b-4655-8de5-fc7659fe198c"></script>
+    {% endif %}
 </head>
 <body>
     <header class="mb-3">
