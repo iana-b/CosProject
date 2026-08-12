@@ -92,21 +92,6 @@ class Purchase(models.Model):
         return f'{self.user.username} - {self.product.title}'
 
 
-class PageView(models.Model):
-    path = models.CharField(max_length=200)
-    product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    ip_hash = models.CharField(max_length=12, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['-created_at']
-        indexes = [models.Index(fields=['-created_at'])]
-
-    def __str__(self):
-        return f'{self.created_at:%Y-%m-%d %H:%M} {self.path}'
-
-
 RATING_CHOICES = [
     (5, '❤️❤️❤️❤️❤️️'),
     (4, '🩷🩷🩷🩷'),

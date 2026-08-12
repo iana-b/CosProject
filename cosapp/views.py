@@ -1,6 +1,3 @@
-from datetime import timedelta
-
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,19 +5,21 @@ from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import (
     Avg,
-    Count,
     Min,
     Q,
 )
-from django.db.models.functions import TruncDate
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
-from django.utils import timezone
 from .forms import LoginForm, SignUpForm, ProductForm, PurchaseForm, ReviewForm
-from .middleware import hash_ip
-from .models import Product, Purchase, Review, Category, Brand, PageView
+from .models import Product, Purchase, Review, Category, Brand
 
 SIGNUPS_PER_HOUR = 3
+
+
+def client_ip(request):
+    """За прокси Fly настоящий адрес приходит в X-Forwarded-For, в REMOTE_ADDR — сам прокси."""
+    forwarded = request.META.get('HTTP_X_FORWARDED_FOR', '').split(',')[0].strip()
+    return forwarded or request.META.get('REMOTE_ADDR', '')
 
 
 # Create your views here.
@@ -37,7 +36,7 @@ def login_view(request):
 
 
 def signup_view(request):
-    key = f'signups:{hash_ip(request)}'
+    key = f'signups:{client_ip(request)}'
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if cache.get(key, 0) >= SIGNUPS_PER_HOUR:
@@ -87,7 +86,6 @@ def product_detail(request, pk):
     )
     if not product.is_visible_to(request.user):
         raise Http404
-    request.viewed_product = product
     purchase_form = PurchaseForm()
     review_form = ReviewForm()
     reviews = Review.objects.filter(product=product).select_related("user")
@@ -188,34 +186,3 @@ def search_view(request):
     ) if query else Product.objects.none()
     context = {'query': query, 'products': products}
     return render(request, 'search.html', context)
-
-
-@staff_member_required
-def stats_view(request):
-    since = timezone.now() - timedelta(days=30)
-    views = PageView.objects.filter(created_at__gte=since)
-    by_day = (
-        views.annotate(day=TruncDate('created_at'))
-        .values('day')
-        .annotate(views=Count('id'), visitors=Count('ip_hash', distinct=True))
-        .order_by('day')
-    )
-    by_day = list(by_day)
-    peak = max((d['views'] for d in by_day), default=0)
-    for day in by_day:
-        day['share'] = round(day['views'] * 100 / peak) if peak else 0
-    top_products = (
-        views.filter(product__isnull=False)
-        .values('product_id', 'product__title', 'product__brand__title')
-        .annotate(views=Count('id'))
-        .order_by('-views')[:10]
-    )
-    context = {
-        'by_day': by_day,
-        'top_products': top_products,
-        'recent': PageView.objects.select_related('user', 'product')[:50],
-        'total_views': views.count(),
-        'total_visitors': views.values('ip_hash').distinct().count(),
-        'pending': Product.objects.filter(status=Product.DRAFT).count(),
-    }
-    return render(request, 'stats.html', context)

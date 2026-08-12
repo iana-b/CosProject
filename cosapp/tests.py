@@ -105,14 +105,3 @@ class SignUpTests(CatalogTestCase):
                 'email': f'user{i}@example.com',
             })
         self.assertEqual(User.objects.filter(username__startswith='user').count(), 3)
-
-
-class StatsTests(CatalogTestCase):
-    def test_stats_page_is_staff_only(self):
-        self.assertEqual(self.client.get('/stats/').status_code, 302)
-
-        self.client.force_login(self.alice)
-        self.assertEqual(self.client.get('/stats/').status_code, 302)
-
-        self.client.force_login(self.staff)
-        self.assertEqual(self.client.get('/stats/').status_code, 200)

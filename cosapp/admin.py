@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Brand, Category, Product, Purchase, Review, PageView
+from .models import Brand, Category, Product, Purchase, Review
 
 
 @admin.register(Product)
@@ -18,16 +18,6 @@ class ProductAdmin(admin.ModelAdmin):
     def hide(self, request, queryset):
         updated = queryset.update(status=Product.DRAFT)
         self.message_user(request, f'Снято с публикации: {updated}')
-
-
-@admin.register(PageView)
-class PageViewAdmin(admin.ModelAdmin):
-    list_display = ('created_at', 'path', 'product', 'user')
-    list_filter = ('created_at',)
-    readonly_fields = ('path', 'product', 'user', 'ip_hash', 'created_at')
-
-    def has_add_permission(self, request):
-        return False
 
 
 admin.site.register(Brand)
