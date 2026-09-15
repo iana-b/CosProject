@@ -15,6 +15,14 @@
             <a href="{% url 'category' product.category.id %}" class="h6">{{ product.category }}</a>
             <h1>{{ product.title }}</h1>
             <a href="{% url 'brand' product.brand.id %}" class="h6 d-block">{{ product.brand }}</a>
+            {% if product.summary %}
+            <div class="mt-3 mb-4">
+                {% for head, text in product.summary_lines %}
+                <p class="mb-1">{% if head %}<span class="summary-head">{{ head }}:</span> {% endif %}{{ text }}</p>
+                {% endfor %}
+                <small class="text-muted">Описание сгенерировано с использованием ИИ, возможны неточности</small>
+            </div>
+            {% endif %}
             <div class="average-rating mb-3">
                 {% with avg_rating=product.get_average_rating %}
                     {% if avg_rating > 0 %}

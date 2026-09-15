@@ -23,6 +23,13 @@ class Category(models.Model):
         return self.title
 
 
+SUMMARY_EMOJI = {
+    'Назначение': '🧴',
+    'Ключевые ингредиенты': '🌱',
+    'Кому подходит': '🧖🏽‍♀️',
+}
+
+
 class Product(models.Model):
     DRAFT = 'draft'
     PUBLISHED = 'published'
@@ -38,9 +45,20 @@ class Product(models.Model):
     user = models.ForeignKey(User, verbose_name='добавил', on_delete=models.CASCADE, null=True)
     status = models.CharField('статус', max_length=9, choices=STATUS_CHOICES, default=DRAFT)
     created_at = models.DateTimeField('добавлен', auto_now_add=True, null=True)
+    summary = models.TextField('краткое описание', blank=True, default='')
 
     def __str__(self):
         return self.title
+
+    def summary_lines(self):
+        """Разбивает описание на пары «заголовок — текст» для вывода в карточке."""
+        for line in self.summary.splitlines():
+            if line.strip():
+                head, separator, text = line.partition(':')
+                if not separator:
+                    yield '', line.strip()
+                else:
+                    yield f'{SUMMARY_EMOJI.get(head.strip(), "")} {head.strip()}'.strip(), text.strip()
 
     def is_visible_to(self, user):
         if self.status == self.PUBLISHED:

@@ -35,6 +35,8 @@ CSRF_TRUSTED_ORIGINS = ['https://cosapp.fly.dev']
 
 INTERNAL_IPS = ['127.0.0.1']
 
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5.6-luna")
+
 # Application definition
 
 INSTALLED_APPS = [

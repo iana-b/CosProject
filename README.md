@@ -14,3 +14,13 @@ Users can also add products and leave their own ratings and reviews, making it p
 - Search products in the catalog  
 - View products added by other users  
 - Track purchase prices
+- AI-generated product summaries
+
+## AI summaries
+
+Product pages show a short summary — purpose, key ingredients, who it suits — generated with the
+OpenAI API using its built-in web search, and labelled as machine-written.
+
+Each summary is generated once and stored on the product, never on page render, so the cost is
+fixed rather than growing with traffic. The model is a small one (`OPENAI_MODEL`): summaries are
+built from search results, which makes the job compression rather than recall.

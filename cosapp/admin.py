@@ -1,4 +1,6 @@
-from django.contrib import admin
+from django.contrib import admin, messages
+
+from .ai import generate_summary
 from .models import Brand, Category, Product, Purchase, Review
 
 
@@ -7,7 +9,18 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'brand', 'category', 'status', 'user', 'created_at')
     list_filter = ('status', 'category', 'brand')
     search_fields = ('title', 'brand__title')
-    actions = ('approve', 'hide')
+    actions = ('approve', 'hide', 'write_summary')
+
+    @admin.action(description='Сгенерировать краткое описание')
+    def write_summary(self, request, queryset):
+        for product in queryset.select_related('brand', 'category'):
+            try:
+                product.summary = generate_summary(product)
+            except Exception as error:
+                self.message_user(request, f'{product}: {error}', messages.ERROR)
+                return
+            product.save(update_fields=['summary'])
+        self.message_user(request, 'Готово. Прочитайте описания перед публикацией.')
 
     @admin.action(description='Опубликовать')
     def approve(self, request, queryset):

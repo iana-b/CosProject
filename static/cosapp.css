@@ -92,3 +92,9 @@
 .pagination-custom .page-item:not(:last-child) .page-link {
   margin: 0 0.2rem;
 }
+
+/* Краткое описание товара */
+.summary-head {
+  color: #8b5fa8;
+  font-weight: 600;
+}
