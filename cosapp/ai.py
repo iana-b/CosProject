@@ -1,7 +1,6 @@
 import re
 
 from django.conf import settings
-from openai import OpenAI
 
 CITATION = re.compile(r'\s*\(?\[[^\]]*\]\([^)]*\)\)?')
 
@@ -15,6 +14,9 @@ PROMPT = (
 
 
 def generate_summary(product):
+    # Импорт внутри функции: иначе SDK грузится в каждый веб-воркер и они не влезают в память.
+    from openai import OpenAI
+
     response = OpenAI().responses.create(
         model=settings.OPENAI_MODEL,
         tools=[{'type': 'web_search'}],
