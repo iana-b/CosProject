@@ -34,7 +34,7 @@ class SignUpForm(UserCreationForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        exclude = ('user', 'status', 'created_at')
+        exclude = ('user', 'status', 'created_at', 'summary')
 
 
 class PurchaseForm(forms.ModelForm):

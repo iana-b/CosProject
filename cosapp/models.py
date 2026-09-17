@@ -42,7 +42,7 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand, verbose_name='бренд', on_delete=models.CASCADE)
     category = models.ForeignKey(Category, verbose_name='категория', on_delete=models.CASCADE)
     picture = models.ImageField('изображение', upload_to='products')
-    user = models.ForeignKey(User, verbose_name='добавил', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, verbose_name='добавил', on_delete=models.SET_NULL, null=True)
     status = models.CharField('статус', max_length=9, choices=STATUS_CHOICES, default=DRAFT)
     created_at = models.DateTimeField('добавлен', auto_now_add=True, null=True)
     summary = models.TextField('краткое описание', blank=True, default='')

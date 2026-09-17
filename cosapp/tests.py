@@ -6,6 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from PIL import Image
 
+from .forms import ProductForm
 from .models import Brand, Category, Product
 
 TEST_STORAGES = {
@@ -62,6 +63,9 @@ class ProductModerationTests(CatalogTestCase):
         product = Product.objects.get(title='Крем')
         self.assertEqual(product.status, Product.DRAFT)
         self.assertEqual(product.user, self.alice)
+
+    def test_users_cannot_write_the_summary(self):
+        self.assertNotIn('summary', ProductForm().fields)
 
     def test_product_from_staff_is_published(self):
         self.client.force_login(self.staff)
