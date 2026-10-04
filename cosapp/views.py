@@ -6,7 +6,9 @@ from django.core.paginator import Paginator
 from django.db.models import (
     Avg,
     Min,
+    OuterRef,
     Q,
+    Subquery,
 )
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -158,6 +160,9 @@ def _products_queryset(queryset=None):
     return qs.filter(status=Product.PUBLISHED).select_related("brand", "category").annotate(
         avg_rating=Avg("review__rating"),
         min_price=Min("purchase__price"),
+        min_currency=Subquery(
+            Purchase.objects.filter(product=OuterRef("pk")).order_by("price").values("currency")[:1]
+        ),
     ).order_by("brand__title", "title")
 
 

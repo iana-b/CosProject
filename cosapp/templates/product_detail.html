@@ -58,7 +58,7 @@
             <div class="card mt-3">
                 <div class="card-body">
                     <p class="card-text">{{ purchase.date }}</p>
-                    <p class="card-text">{{ purchase.price }}</p>
+                    <p class="card-text">{{ purchase.price }} {{ purchase.get_currency_display }}</p>
                 </div>
             </div>
             {% endfor %}

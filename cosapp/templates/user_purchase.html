@@ -28,7 +28,7 @@
                 </td>
                 <td>{{ purchase.product.brand }}</td>
                 <td>{{ purchase.date }}</td>
-                <td>{{ purchase.price }}</td>
+                <td>{{ purchase.price }} {{ purchase.get_currency_display }}</td>
             </tr>
             {% endfor %}
             </tbody>

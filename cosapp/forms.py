@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.text import capfirst
 
-from .models import Product, Purchase, Review
+from .models import CURRENCY_CHOICES, Product, Purchase, Review
 
 
 class LoginForm(AuthenticationForm):
@@ -41,6 +41,8 @@ class PurchaseForm(forms.ModelForm):
     date = forms.DateField(
         label=capfirst(Purchase.date.field.verbose_name), required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     store = forms.CharField(label=capfirst(Purchase.store.field.verbose_name), required=False)
+    currency = forms.ChoiceField(
+        label=capfirst(Purchase.currency.field.verbose_name), choices=CURRENCY_CHOICES, initial='PLN')
 
     class Meta:
         model = Purchase

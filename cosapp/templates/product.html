@@ -19,7 +19,7 @@
             {% with min_price=product.get_minimal_price %}
                 {% if min_price > 0 %}
                     <small>
-                        <span class="text-muted">{{ min_price|floatformat:1 }}</span>
+                        <span class="text-muted">от {{ min_price|floatformat:0 }} {{ product.get_minimal_price_currency }}</span>
                     </small>
                 {% endif %}
             {% endwith %}

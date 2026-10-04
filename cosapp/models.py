@@ -81,6 +81,14 @@ class Product(models.Model):
             return purchases.aggregate(models.Min('price'))['price__min']
         return 0
 
+    def get_minimal_price_currency(self):
+        if hasattr(self, "min_currency"):
+            code = self.min_currency
+        else:
+            cheapest = Purchase.objects.filter(product=self).order_by('price').first()
+            code = cheapest.currency if cheapest else ''
+        return dict(CURRENCY_CHOICES).get(code, '')
+
     def get_hearts_display(self):
         avg = self.get_average_rating()
         import math
@@ -99,10 +107,20 @@ class Product(models.Model):
             return ''
 
 
+CURRENCY_CHOICES = [
+    ('PLN', 'zł'),
+    ('EUR', '€'),
+    ('USD', '$'),
+    ('GBP', '£'),
+    ('RUB', '₽'),
+]
+
+
 class Purchase(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     price = models.DecimalField('стоимость', max_digits=6, decimal_places=2)
+    currency = models.CharField('валюта', max_length=3, choices=CURRENCY_CHOICES, default='PLN')
     date = models.DateField('дата', null=True)
     store = models.CharField('магазин', max_length=30)
 
